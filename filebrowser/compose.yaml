@@ -1,0 +1,13 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: Filebrowser-DH
+    volumes:
+      - /home:/srv #Change to match your directory, this will be the main (root) directory you will have access to.
+      - ./filebrowser.db:/database/filebrowser.db #Change to match your directory
+      - ./settings.json:/config/settings.json #Change to match your directory
+    environment:
+      - PUID=$(id -u) #Fetch User ID 
+      - PGID=$(id -g) #Fetch Group ID 
+    ports:
+      - 7500:80 #Change the port if needed
