@@ -1,0 +1,93 @@
+#######################################################################################
+#### Config Help Docs 
+#### https://docs.frigate.video/configuration/reference 
+### These are my config please feel free to update to suite your needs
+#######################################################################################
+
+mqtt:
+# Adjust following settings as per your mqtt setup
+  host: 192.168.1.2 
+  port: 1883
+  topic_prefix: frigate
+  client_id: frigate
+  user: mymqttuser
+  password: mymqttuser_password
+#  stats_intervl: 60
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+
+cameras:
+####################################################### Front Camera ####################################################  
+  front:
+    ffmpeg:
+      inputs:
+        - path: 
+            rtsp://camerauser:password@192.168.1.20:554/cam/realmonitor?channel=4&subtype=1
+          roles:
+            - detect
+        - path: 
+            rtsp://camerauser:password@192.168.1.20:554/cam/realmonitor?channel=4&subtype=0
+          roles:
+            - record
+    objects:
+      track:
+        - person
+        - car
+        - bicycle
+        - motorcycle
+      mask: 438,119,0,58,0,0,377,0,704,0,704,226
+      filters:
+      #   person:
+      #     mask:
+        car:
+          # Optional: minimum score for the object to initiate tracking (default: shown below)
+          min_score: 0.6
+          # Optional: minimum decimal percentage for tracked object's computed score to be considered a true positive (default: shown below)
+          threshold: 0.7
+          # Optional: mask to prevent this object type from being detected in certain areas (default: no mask)
+          # Checks based on the bottom center of the bounding box of the object
+          mask:
+            - 158,104,0,147,0,218,218,157
+    snapshots:
+      enabled: true
+      required_zones:
+        - turf
+        - driveway
+      timestamp: true
+      bounding_box: true
+      retain:
+        default: 5
+    record:
+      enabled: true
+      events:
+        pre_capture: 10
+        post_capture: 10
+        retain:
+          default: 5
+          mode: active_objects
+    motion:
+      mask:
+        - 677,50,668,24,440,22,444,45
+        - 393,113,253,89,0,166,0,58,0,0,377,0,704,0,704,226
+    zones:
+      turf:
+        coordinates: 0,267,0,576,704,576,704,247,404,129,323,137
+      driveway:
+        coordinates: 266,95,312,106,362,116,239,149,183,119
+      ouside:
+        coordinates: 393,113,253,89,0,166,0,58,0,0,377,0,704,0,704,226
+      parking:
+        coordinates: 171,120,0,179,0,252,233,173
+        objects:
+          - person
+          - bicycle
+          - motorcycle
+    review:
+      alerts:
+        required_zones:
+          - turf
+          - driveway
