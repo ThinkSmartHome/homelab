@@ -9,7 +9,7 @@ services:
     environment:
       - SIGNUPS_ALLOWED=${SIGNUPS_ON}
       - DOMAIN=${DOMAIN_NAME}
-      - PUSH_ENABLED=true
+      - PUSH_ENABLED=true # Get your Keys https://bitwarden.com/host/
       - PUSH_INSTALLATION_ID=${PUSH_INSTALL_ID}
       - PUSH_INSTALLATION_KEY=${PUSH_INSTALL_KEY}
       - PUSH_RELAY_BASE_URI=${PUSH_RELAY_URI}
