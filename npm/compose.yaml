@@ -1,0 +1,36 @@
+services:
+  app:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    ports:
+      # These ports are in format <host-port>:<container-port>
+      - 80:80 # Public HTTP Port
+      - 443:443 # Public HTTPS Port
+      - 81:81 # Admin Web Port
+      # Add any other Stream port you want to expose
+      # - '21:21' # FTP
+    environment:
+      # Mysql/Maria connection parameters:
+      - DB_MYSQL_HOST:${MY_SQL_DB_HOST}
+      - DB_MYSQL_PORT:${MY_SQL_DB_PORT}
+      - DB_MYSQL_USER:${MY_SQL_DB_USER}
+      - DB_MYSQL_PASSWORD:${MY_SQL_DB_PASSWORD}
+      - DB_MYSQL_NAME:${MY_SQL_DB_NAME}
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: 'true'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - db
+  db:
+    image: jc21/mariadb-aria:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD:${MY_SQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE:${MY_SQL_DATABASE}
+      - MYSQL_USER:${MY_SQL_USER}
+      - MYSQL_PASSWORD:${MY_SQL_PASSWORD}
+      - MARIADB_AUTO_UPGRADE:${MARIADB_AUTO_UPGRADE_EN}
+    volumes:
+      - ./mysql:/var/lib/mysql
