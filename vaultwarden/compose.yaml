@@ -1,0 +1,15 @@
+services:
+  server:
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./vw-data/:/data
+    environment:
+      - SIGNUPS_ALLOWED=${SIGNUPS_ON}
+      - DOMAIN=${DOMAIN_NAME}
+      - PUSH_ENABLED=true
+      - PUSH_INSTALLATION_ID=${PUSH_INSTALL_ID}
+      - PUSH_INSTALLATION_KEY=${PUSH_INSTALL_KEY}
+      - PUSH_RELAY_BASE_URI=${PUSH_RELAY_URI}
