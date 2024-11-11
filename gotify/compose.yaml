@@ -28,8 +28,8 @@ services:
       - ./api-data:/app/data
     environment:
       #  optional environment for iOS App
-      #- GOTIFY_URLS=${MY_URLS}
-      #- GOTIFY_CLIENT_TOKENS=${MY_CLIENT_TOKEN}
-      #- SECNTFY_TOKENS=${MY_SECNTFY_TOKEN}
+      - GOTIFY_URLS=${MY_URLS}
+      - GOTIFY_CLIENT_TOKENS=${MY_CLIENT_TOKEN}
+      - SECNTFY_TOKENS=${MY_SECNTFY_TOKEN}
 networks:
   gotifynet: null
