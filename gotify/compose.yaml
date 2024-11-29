@@ -1,35 +1,41 @@
 services:
-  ######### Admin Portal ######### 
-
   gotify:
-    image: ghcr.io/gotify/server
+    container_name: gotify
+    hostname: gotify
+    image: gotify/server:latest
     restart: unless-stopped
-    ports:
-      - 7080:80
+    security_opt:
+      - no-new-privileges:true
     networks:
       - gotifynet
+    ports:
+      - 9980:80
     volumes:
       - ./data:/app/data
     environment:
-      - GOTIFY_DEFAULTUSER_PASS=${MY_SECRET_PASS}
-      
-  ######### For App #########     
-
+      GOTIFY_DEFAULTUSER_PASS: ${PASS}
+    env_file:
+      - .env
   igotify:
     container_name: igotify
     hostname: igotify
-    image: ghcr.io/androidseb25/igotify-notification-assist
+    image: ghcr.io/androidseb25/igotify-notification-assist:latest
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    pull_policy: always
     networks:
       - gotifynet
     ports:
-      - 7081:8080
+      - 9981:8080
     volumes:
       - ./api-data:/app/data
     environment:
-      #  optional environment for iOS App
-      - GOTIFY_URLS=${MY_URLS}
-      - GOTIFY_CLIENT_TOKENS=${MY_CLIENT_TOKEN}
-      - SECNTFY_TOKENS=${MY_SECNTFY_TOKEN}
+      # option environment see above note
+      GOTIFY_URLS: ${URLS}
+      GOTIFY_CLIENT_TOKENS: ${CLIENT_TOKEN}
+      SECNTFY_TOKENS: ${DEVICE_TOKEN}
+    env_file:
+      - .env
 networks:
-  gotifynet: null
+  gotifynet: {}
