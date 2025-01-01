@@ -14,8 +14,6 @@ services:
       - ./data:/app/data
     environment:
       GOTIFY_DEFAULTUSER_PASS: ${PASS}
-    env_file:
-      - .env
   igotify:
     container_name: igotify
     hostname: igotify
@@ -35,7 +33,6 @@ services:
       GOTIFY_URLS: ${URLS}
       GOTIFY_CLIENT_TOKENS: ${CLIENT_TOKEN}
       SECNTFY_TOKENS: ${DEVICE_TOKEN}
-    env_file:
-      - .env
 networks:
-  gotifynet: {}
+  gotifynet: null
+  "": {}
